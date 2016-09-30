@@ -1,0 +1,110 @@
+Viesti
+	(pk) id
+	(fk) Lähettäjä:lähettäjä
+	lähetysaika
+	viesti
+
+Lähettäjä
+	(pk) nimimerkki
+	status
+	salasana
+
+Alue
+	(pk) tunnus
+	kuvaus
+	nimi
+	viestiketjujen yhteismäärä
+	(fk) kategoria
+
+Viestiketju
+	(pk) id
+	otsikko
+	(fk) alue:Alue
+	boolean suljettu
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Oma versioni
+
+	Viesti
+		(pk) v_id			integer primary key autoincrement unique
+		(fk) vk_id			integer foreign key	
+		nimimerkki			varchar
+		viesti				varchar
+		lähetysaika			DATE
+	Viestiketju				
+		(pk) vk_id			integer primary key autoincrement unique
+		(fk) a_id			integer foreign key
+		otsikko				varchar
+		luoja				varchar
+		aloitusviesti			varchar
+		luomisaika			DATE
+	Alue 					
+		(pk) a_id			integer primary key autoincrement unique
+		nimi				varchar
+		luoja				varchar
+		luomisaika			DATE
+		otsikko				varchar
+
+
+
+
+Komennot:
+	Viesti taulun tekeminen
+		CREATE TABLE Viesti(v_id INTEGER PRIMARY KEY AUTOINCREMENT, vk_id INTEGER, nimimerkki VARCHAR, viesti VARCHAR, lahetysaika DATE, FOREIGN KEY(vk_id) REFERENCES Viestiketju(vk_id));
+
+	Viestin lisääminen Viesti-tauluun
+		INSERT INTO Viesti (vk_id,nimimerkki,viesti,lahetysaika) VALUES (1,"Pete","Oispa kaljaa!",DateTime('now'));
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	Viestiketju taulun tekeminen
+		CREATE TABLE Viestiketju (vk_id INTEGER PRIMARY KEY AUTOINCREMENT, a_id INTEGER, otsikko VARCHAR, luoja VARCHAR, aloitusviesti VARCHAR, luomisaika DATE, FOREIGN KEY(a_id) REFERENCES Alue(a_id));
+	
+	Uuden viestiketjun tekeminen
+		INSERT INTO Viestiketju (a_id,otsikko,luoja,aloitusviesti,luomisaika) VALUES (1,"Onko java jees?","Reiska","Itse en mitään javaa koodaile!!", Datetime('now'));
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	Alue taulun tekeminen
+		CREATE TABLE Alue (a_id INTEGER PRIMARY KEY AUTOINCREMENT, otsikko VARCHAR, luoja VARCHAR, kuvaus VARCHAR, luomisaika DATE);
+
+	Uuden alueen tekeminen
+		INSERT INTO Alue (otsikko,luoja,kuvaus,luomisaika) VALUES ("Ohjelmointi","Pete","Täällä voi keskustella vapaasti ohjelmista ja ohjelmoinnista.",Datetime('now'));
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Testikoodi:
+
+DROP TABLE Viesti;
+DROP TABLE Viestiketju;
+DROP TABLE Alue;
+
+CREATE TABLE Viesti(v_id INTEGER PRIMARY KEY AUTOINCREMENT, vk_id INTEGER, nimimerkki VARCHAR, viesti VARCHAR, lahetysaika DATE, FOREIGN KEY(vk_id) REFERENCES Viestiketju(vk_id));
+CREATE TABLE Viestiketju (vk_id INTEGER PRIMARY KEY AUTOINCREMENT, a_id INTEGER, otsikko VARCHAR, luoja VARCHAR, aloitusviesti VARCHAR, luomisaika DATE, FOREIGN KEY(a_id) REFERENCES Alue(a_id));
+CREATE TABLE Alue (a_id INTEGER PRIMARY KEY AUTOINCREMENT, otsikko VARCHAR, luoja VARCHAR, kuvaus VARCHAR, luomisaika DATE);
+
+
+INSERT INTO Alue (otsikko,luoja,kuvaus,luomisaika) VALUES ("Ohjelmointi","Pete","Täällä voi keskustella vapaasti ohjelmista ja ohjelmoinnista.",Datetime('now'));
+INSERT INTO Alue (otsikko,luoja,kuvaus,luomisaika) VALUES ("Ajoneuvot ja pärisevät laitteet","Pete","Autojuttuja ja moottoreita",Datetime('now'));
+INSERT INTO Alue (otsikko,luoja,kuvaus,luomisaika) VALUES ("Muut","Pete","Tänne spammi sun muut herkut",Datetime('now'));
+
+
+
+INSERT INTO Viestiketju (a_id,otsikko,luoja,aloitusviesti,luomisaika) VALUES (1,"Onko java jees?","Reiska","Itse en mitään javaa koodaile!!", Datetime('now'));
+INSERT INTO Viestiketju (a_id,otsikko,luoja,aloitusviesti,luomisaika) VALUES (3,"Haluutsä turpaan","Anni","Haluutko vai et, häh?", Datetime('now'));
+INSERT INTO Viestiketju (a_id,otsikko,luoja,aloitusviesti,luomisaika) VALUES (1,"Matematiikka ja ohjelmointi","Pete","Matikka on jees!", Datetime('now'));
+INSERT INTO Viestiketju (a_id,otsikko,luoja,aloitusviesti,luomisaika) VALUES (1,"Onko ruby jees?","Reiska","Ei", Datetime('now'));
+INSERT INTO Viestiketju (a_id,otsikko,luoja,aloitusviesti,luomisaika) VALUES (2,"Millä autolla ajelette pitkin teitä?","Reiska","Itel BWM 2001020", Datetime('now'));
+
+INSERT INTO Viesti (vk_id,nimimerkki,viesti,lahetysaika) VALUES (1,"Pete","Kannataisi koodata javaa, se on aikas jees.",DateTime('now'));
+INSERT INTO Viesti (vk_id,nimimerkki,viesti,lahetysaika) VALUES (2,"Topi","En halua",DateTime('now'));
+INSERT INTO Viesti (vk_id,nimimerkki,viesti,lahetysaika) VALUES (3,"Petteri","Matematiikka ei ole jees!",DateTime('now'));
+INSERT INTO Viesti (vk_id,nimimerkki,viesti,lahetysaika) VALUES (4,"Repe","Oispa kaljaa!",DateTime('now'));
+INSERT INTO Viesti (vk_id,nimimerkki,viesti,lahetysaika) VALUES (5,"Topi","Mulla on Lambo =)",DateTime('now'));
+INSERT INTO Viesti (vk_id,nimimerkki,viesti,lahetysaika) VALUES (5,"Juhis 9a","Polkupyörällä vetelen ku se ei saastuta luontoa!",DateTime('now'));
+
+
+SELECT * FROM Alue;
+SELECT * FROM Viestiketju;
+SELECT * FROM Viesti;
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Jos halutaan kaikki alueen 1 viestit:
+	SELECT * FROM Viesti JOIN Viestiketju ON viesti.vk_id=viestiketju.vk_id WHERE viestiketju.a_id = 1;
+
+Jos halutaan viestien yhteismäärä:
+	SELECT COUNT(*) AS Viesteja_yhteensa FROM Viesti;
