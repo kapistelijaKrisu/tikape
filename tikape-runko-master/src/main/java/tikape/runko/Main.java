@@ -4,20 +4,23 @@ import java.util.HashMap;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
+import tikape.runko.database.AlueDao;
 import tikape.runko.database.Database;
 import tikape.runko.database.OpiskelijaDao;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Database database = new Database("jdbc:sqlite:opiskelijat.db");
+        Database database = new Database("jdbc:sqlite:foorumi.db");
         database.init();
 
         OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
+        AlueDao alueDao = new AlueDao(database);
 
-        get("/", (req, res) -> {
+        get("/", (req, res) -> { //Juuressa näytetään kaikki alueet
             HashMap map = new HashMap<>();
-            map.put("viesti", "tervehdys");
+            
+            map.put("alueet", alueDao.findAll());
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
@@ -29,11 +32,12 @@ public class Main {
             return new ModelAndView(map, "opiskelijat");
         }, new ThymeleafTemplateEngine());
 
-        get("/opiskelijat/:id", (req, res) -> {
+        get("/alue/:a_id", (req, res) -> { // Näytetään aluekohtaiset viestiketjut
             HashMap map = new HashMap<>();
-            map.put("opiskelija", opiskelijaDao.findOne(Integer.parseInt(req.params("id"))));
+            map.put("alueet", alueDao.findOne(Integer.parseInt(req.params("a_id"))));
 
-            return new ModelAndView(map, "opiskelija");
+
+            return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
     }
 }
