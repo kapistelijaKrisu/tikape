@@ -74,7 +74,7 @@ public class AlueDao implements Dao {
             System.out.println(rs);
             alueet.add(new Alue(a_id, otsikko, luoja, kuvaus, luomisaika));
         }
-
+        
         rs.close();
         stmt.close();
         connection.close();

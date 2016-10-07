@@ -57,11 +57,11 @@ public class Alue {
         this.kuvaus = kuvaus;
     }
 
-    public String getLuomisasika() {
+    public String getLuomisaika() {
         return luomisaika;
     }
 
-    public void setLuomisasika(String luomisasika) {
+    public void setLuomisaika(String luomisasika) {
         this.luomisaika = luomisasika;
     }
 

@@ -1,0 +1,47 @@
+body { 
+    margin: 0;
+    padding: 0;
+    background-color: #ffec65;
+}
+
+.wrapper {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.lista {
+    list-style-type: none;
+    padding: 0;
+}
+
+.alue {
+    height: 30px;
+    margin: 5px;
+    border: 3px solid black;
+    border-radius: 5px;
+    background-color: #fffb72;
+    position: relative;
+    padding: 5px;
+}
+
+.alue:hover {
+    background-color: #f7e400;
+}
+
+.alue .otsikko {
+    position: absolute;
+    width: 230px;
+    font-size: 110%;
+}
+
+.alue .kuvaus {
+    position: absolute;
+    width: 500px;
+    margin-left: -250px;
+    left: 500px;
+}
+
+.alue .luomisaika {
+    position: absolute;
+    right: 5px;
+}

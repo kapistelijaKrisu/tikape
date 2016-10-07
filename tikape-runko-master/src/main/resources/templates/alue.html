@@ -19,11 +19,11 @@
         <h1>Tervetuloa hassunhauskalle keskustelufoorumille!</h1>
 
         <p>Tässä listaus kaikista tämän alueen keskusteluista:</p>
-        <ol>
-            <li style="list-style-type:none" th:each="viestiketju: ${alueet}">
+        <ul style="list-style-type:none">
+            <li th:each="viestiketju: ${alueet}">
                 <span th:text="${viestiketju.nimi}">Alueen otsikko</span> <a th:href="${'/ketju/' + viestiketju.vk_id}">linkki</a>
             </li>
-        </ol>
+        </ul>
 
     </body>
 </html>
