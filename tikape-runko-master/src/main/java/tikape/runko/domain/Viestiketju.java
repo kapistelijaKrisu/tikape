@@ -18,7 +18,8 @@ public class Viestiketju {
     private String aloitusviesti;
     private String luomisaika;
 
-    public Viestiketju(int vk_id, int a_id, String nimi, String luoja, String aloitusviesti, String luomisaika) {
+    public Viestiketju(int vk_id, int a_id, String nimi, 
+            String luoja, String aloitusviesti, String luomisaika) {
         this.vk_id = vk_id;
         this.a_id = a_id;
         this.nimi= nimi;

@@ -16,12 +16,14 @@
     </head>
 
     <body>
-        <h1>Tervetuloa hassunhauskalle keskustelufoorumille!</h1>
+        <h1>viestisisältö!</h1>
 
-        <p>Tässä listaus kaikista tämän alueen keskusteluista:</p>
+        <p>Tässä listaus kaikista viestisisältö</p>
         <ol>
-            <li style="list-style-type:none" th:each="viestiketju: ${alueet}">
-                <span th:text="${viestiketju.nimi}"> </span> <a th:href="${'/ketju/' + viestiketju.vk_id}">linkki</a>
+            <li style="list-style-type:none" th:each="viesti: ${viestit}">
+          
+                <span th:text="${viesti}"> viesti</span> 
+            
             </li>
         </ol>
 

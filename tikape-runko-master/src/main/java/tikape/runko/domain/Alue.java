@@ -61,7 +61,7 @@ public class Alue {
         return luomisaika;
     }
 
-    public void setLuomisasika(String luomisasika) {
+    public void setLuomisaika(String luomisasika) {
         this.luomisaika = luomisasika;
     }
 
