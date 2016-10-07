@@ -16,12 +16,40 @@ public class Alue {
     private String luoja;
     private String kuvaus;
     private String luomisaika;
-
-    public Alue(int a_id, String otsikko, String luoja, String kuvaus, String luomisaika) {
+    private String viimeisinviesti;
+    private String aluekohtainenViestimäärä;
+    
+    public Alue(int a_id, String otsikko, String luoja, String kuvaus, String luomisaika, String viimeisinviesti, String aluekohtainenViestimäärä) {
         this.a_id = a_id;
         this.otsikko = otsikko;
         this.luoja = luoja;
         this.kuvaus = kuvaus;
+        this.luomisaika = luomisaika;
+        this.viimeisinviesti = viimeisinviesti;
+        this.aluekohtainenViestimäärä = aluekohtainenViestimäärä;
+    }
+
+    public String getAluekohtainenViestimäärä() {
+        return aluekohtainenViestimäärä;
+    }
+
+    public void setAluekohtainenViestimäärä(String aluekohtainenViestimäärä) {
+        this.aluekohtainenViestimäärä = aluekohtainenViestimäärä;
+    }
+
+    public String getViimeisinviesti() {
+        return viimeisinviesti;
+    }
+
+    public void setViimeisinviesti(String viimeisinviesti) {
+        this.viimeisinviesti = viimeisinviesti;
+    }
+
+    public String getLuomisaika() {
+        return luomisaika;
+    }
+
+    public void setLuomisaika(String luomisaika) {
         this.luomisaika = luomisaika;
     }
 

@@ -27,10 +27,10 @@ public class AlueDao implements Dao {
     }
 
     @Override
-    public List findOne(Object key) throws SQLException { //Listaa tietyn alueen kaikki viestiketjut
+    public List findOne(Object key) throws SQLException { //Listaa tietyn alueen kaikki viestiketjut (alue.html)
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue JOIN Viestiketju ON Alue.a_id=Viestiketju.a_id WHERE Alue.a_id = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT Viestiketju.vk_otsikko,COUNT(Viesti),Viestiketju.vk_id,Alue.a_id,vk_otsikko,Viestiketju.luoja,Viestiketju.aloitusviesti,Viestiketju.luomisaika FROM Alue JOIN Viestiketju ON Alue.a_id=Viestiketju.a_id JOIN Viesti ON Viestiketju.vk_id=Viesti.vk_id WHERE Viestiketju.a_id = ? GROUP BY Viestiketju.vk_id");
         stmt.setObject(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -42,7 +42,8 @@ public class AlueDao implements Dao {
             String luoja = rs.getString("luoja");
             String aloitusviesti = rs.getString("aloitusviesti");
             String luomisaika = rs.getString("luomisaika");
-            viestiketjut.add(new Viestiketju(vk_id, a_id, vk_otsikko, luoja, aloitusviesti, luomisaika));
+            Integer viestimäärä = rs.getInt("COUNT(Viesti)");
+            viestiketjut.add(new Viestiketju(vk_id, a_id, vk_otsikko, luoja, aloitusviesti, luomisaika,viestimäärä));
         }
 
         rs.close();
@@ -52,31 +53,64 @@ public class AlueDao implements Dao {
         for (Viestiketju viestiketju : viestiketjut) {
             System.out.print(" " + viestiketju.getVk_id() + " ");
             System.out.println(viestiketju.getNimi());
+            System.out.println(viestiketju.getViestimäärä());
         }
+
+
+   
 
         return viestiketjut;
     }
 
     @Override
-    public List findAll() throws SQLException { //Listaa kaikki alueet
+    public List findAll() throws SQLException { //hakee tietokannasta index.html luomiseen tarvittavat tiedot.
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue");
-
+        PreparedStatement stmt = connection.prepareStatement("SELECT (SELECT COUNT(Viesti) FROM Alue JOIN Viestiketju ON Alue.a_id=Viestiketju.a_id JOIN Viesti ON Viestiketju.vk_id=Viesti.vk_id GROUP BY Alue.a_id) AS aluekohtainenViestimaara,Alue.a_id,otsikko,Alue.luoja,kuvaus,Alue.luomisaika FROM Alue JOIN Viestiketju ON Alue.a_id=Viestiketju.a_id JOIN Viesti ON Viestiketju.vk_id=Viesti.vk_id GROUP BY Alue.a_id;");
+        
+        
+        PreparedStatement statement = connection.prepareStatement("SELECT COUNT(Viesti) AS aluekohtainenViestimaara FROM Alue JOIN Viestiketju ON Alue.a_id=Viestiketju.a_id JOIN Viesti ON Viestiketju.vk_id=Viesti.vk_id GROUP BY Alue.a_id");
+        ResultSet setti2 = statement.executeQuery();
+        
+        PreparedStatement aika = connection.prepareStatement("SELECT Alue.a_id,Max(Viesti.lahetysaika) AS viimeinen FROM Viesti JOIN Viestiketju ON Viesti.vk_id=Viestiketju.vk_id JOIN Alue ON Viestiketju.a_id=Alue.a_id GROUP BY Viestiketju.a_id ORDER BY Viesti.lahetysaika DESC");
+        ResultSet ajat = aika.executeQuery();
+        
+        
+        
         ResultSet rs = stmt.executeQuery();
         List<Alue> alueet = new ArrayList<>();
         while (rs.next()) {
+            
+            setti2.next();
+            ajat.next();
+            
+            
             Integer a_id = rs.getInt("a_id");
             String otsikko = rs.getString("otsikko");
             String luoja = rs.getString("luoja");
             String kuvaus = rs.getString("kuvaus");
             String luomisaika = rs.getString("luomisaika");
-            System.out.println(rs);
-            alueet.add(new Alue(a_id, otsikko, luoja, kuvaus, luomisaika));
+            
+            
+            String viimeisinviestiAika = ajat.getString("viimeinen");
+            String aluekohtainenViestimäärä = setti2.getString("aluekohtainenViestimaara");
+            
+            System.out.println(a_id + otsikko + luoja + kuvaus + luomisaika);
+            
+            alueet.add(new Alue(a_id, otsikko, luoja, kuvaus, luomisaika, viimeisinviestiAika,aluekohtainenViestimäärä));
         }
+        
+        
+        
+        
+        
 
         rs.close();
         stmt.close();
+        statement.close();
+        setti2.close();
+        aika.close();
+        ajat.close();
         connection.close();
 
         return alueet;

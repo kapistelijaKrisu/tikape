@@ -4,24 +4,17 @@
     <head>
         <title>Ryhmä Pöllöt - Keskustelufoorumi</title>
         <meta charset="utf-8" />
-        <style>
-            body 
-            { 
-                margin: 0; 
-                padding: 0; 
-                text-align: center; 
-            } 
-
-        </style>
     </head>
 
     <body>
         <h1>Tervetuloa hassunhauskalle keskustelufoorumille!</h1>
 
         <p>Tässä listaus kaikista tämän alueen keskusteluista:</p>
+        <p>Viestiketjun nimi | Viestimäärä | Linkki viestiketjuun</p>
         <ol>
             <li style="list-style-type:none" th:each="viestiketju: ${alueet}">
-                <span th:text="${viestiketju.nimi}">Alueen otsikko</span> <a th:href="${'/ketju/' + viestiketju.vk_id}">linkki</a>
+                <span th:text="${viestiketju.nimi}">Alueen otsikko</span>
+                <span th:text="${viestiketju.viestimäärä}">Viestimäärä</span>  <a th:href="${'/ketju/' + viestiketju.vk_id}">linkki</a>
             </li>
         </ol>
 

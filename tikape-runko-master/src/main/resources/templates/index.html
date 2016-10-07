@@ -4,24 +4,19 @@
     <head>
         <title>Ryhmä Pöllöt - Keskustelufoorumi</title>
         <meta charset="utf-8" />
-        <style>
-            body 
-            { 
-                margin: 0; 
-                padding: 0; 
-                text-align: center; 
-            } 
-
-        </style>
     </head>
 
     <body>
         <h1>Tervetuloa hassunhauskalle keskustelufoorumille!</h1>
 
         <p>Tässä listaus kaikista keskustelualueista:</p>
+        <p>Alueen otsikko | Aluekohtainen viestimäärä | Viimeisin viesti | Linkki alueelle </p>
         <ol>
             <li style="list-style-type:none" th:each="alue: ${alueet}">
-                <span th:text="${alue.otsikko}">Alueen otsikko</span> <a th:href="${'/alue/' + alue.a_id}">linkki</a>
+                <span th:text="${alue.otsikko} ">Alueen otsikko</span>
+                <span th:text="${alue.aluekohtainenViestimäärä}"></span>
+                <span th:text="${alue.viimeisinviesti}"></span>
+                <a th:href="${'/alue/' + alue.a_id}">linkki</a>
             </li>
         </ol>
 

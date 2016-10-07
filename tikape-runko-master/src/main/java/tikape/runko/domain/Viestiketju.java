@@ -17,15 +17,24 @@ public class Viestiketju {
     private String luoja;
     private String aloitusviesti;
     private String luomisaika;
+    private Integer viestimäärä;
 
-    public Viestiketju(int vk_id, int a_id, String nimi, String luoja, String aloitusviesti, String luomisaika) {
+    public Viestiketju(int vk_id, int a_id, String nimi, String luoja, String aloitusviesti, String luomisaika, int viestimäärä) {
         this.vk_id = vk_id;
         this.a_id = a_id;
         this.nimi= nimi;
         this.luoja = luoja;
         this.aloitusviesti = aloitusviesti;
         this.luomisaika = luomisaika;
+        this.viestimäärä = viestimäärä;
+    }
 
+    public Integer getViestimäärä() {
+        return viestimäärä;
+    }
+
+    public void setViestimäärä(Integer viestimäärä) {
+        this.viestimäärä = viestimäärä;
     }
 
     public Integer getVk_id() {
