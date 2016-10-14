@@ -127,7 +127,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         List<Viesti> viestit = findAllByViestiKejuId(id);
 
-        Debug.print(viestit, "asd");
+        
         if (viestit.size() > 10) {
 
             Connection connection = database.getConnection();

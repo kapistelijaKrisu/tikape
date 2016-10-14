@@ -8,6 +8,8 @@ import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.dao.*;
 import tikape.runko.database.*;
+import tikape.runko.domain.Alue;
+import tikape.runko.domain.Viestiketju;
 
 public class Main {
 
@@ -15,7 +17,7 @@ public class Main {
         Spark.staticFileLocation("/templates");
         Database database = new Database("jdbc:sqlite:foorumi.db");
         database.init();
-        boolean debug = true;
+        boolean debug = false;
 
         AlueDao alueDao = new AlueDao(database);
         ViestiketjuDao vKetjuDao = new ViestiketjuDao(database);
@@ -23,20 +25,29 @@ public class Main {
 
         get("/", (req, res) -> { //Juuressa näytetään kaikki alueet
             HashMap map = new HashMap<>();
-            List areas = alueDao.findAll();
+            List<Alue> areas = alueDao.findAll();
 
+            for (Alue area : areas) {
+                area.setV_maara(vKetjuDao.getViestienMaaraAlueessa(area.getA_id()));
+            }
+            
             if (debug) {
                 Debug.print(areas, "at main 28");
             }
             map.put("alueet", areas);
+        
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
         get("/alue/:a_id", (req, res) -> { // Näytetään aluekohtaiset viestiketjut
             HashMap map = new HashMap<>();
-            List vkByArea = vKetjuDao.findAllByAlueId(Integer.parseInt(req.params("a_id")));
+            List<Viestiketju> vkByArea = vKetjuDao.findAllByAlueId(Integer.parseInt(req.params("a_id")));
 
+            for (Viestiketju ketju : vkByArea) {
+                ketju.setV_maara(vKetjuDao.getViestienMaaraKetjus(ketju.getVk_id()));
+            }
+            
             if (debug) {
                 Debug.print(vkByArea, "main at 39");
             }
@@ -53,7 +64,9 @@ public class Main {
                 Debug.print(vByVk, "main at 50");
             }
             map.put("viestit", vByVk);
-
+            map.put("otsikko", vKetjuDao.findOne(Integer.parseInt(req.params("vk_id"))).getNimi());
+            map.put("aloitusviesti", vKetjuDao.findOne(Integer.parseInt(req.params("vk_id"))).getAloitusviesti());
+                     
             return new ModelAndView(map, "viesti");
         }, new ThymeleafTemplateEngine());
 
@@ -84,17 +97,33 @@ public class Main {
             params.put("otsikko", req.queryParams("otsikko"));
             params.put("luoja", req.queryParams("luoja"));
             params.put("viesti", req.queryParams("viesti"));
-            
-            /* p.setObject(1, params.get("id"));
-            p.setObject(2, params.get("otsikko"));
-            p.setObject(3, params.get("luoja"));*/
-
+ 
             if (debug) {
                 Debug.print(params, "main at 63");
             }
             vKetjuDao.add(params);
+            vKetjuDao.fixSize(Integer.parseInt(req.params("a_id")));
             
             res.redirect("/alue/" + req.params("a_id"));
+            return "Kerrotaan siitä tiedon lähettäjälle";
+        }
+        );
+        
+        post("/", (req, res) -> { //lisätään alue 
+            
+            HashMap<String, Object> params = new HashMap<>();
+           
+            params.put("otsikko", req.queryParams("otsikko"));
+            params.put("luoja", req.queryParams("luoja"));
+            params.put("kuvaus", req.queryParams("kuvaus"));
+            
+           
+            if (debug) {
+                Debug.print(params, "main at 63");
+            }
+            alueDao.add(params);
+            
+            res.redirect("/");
             return "Kerrotaan siitä tiedon lähettäjälle";
         }
         );

@@ -19,7 +19,7 @@ import tikape.runko.domain.Alue;
  *
  * @author marko
  */
-public class AlueDao implements Dao <Alue, Integer> {
+public class AlueDao implements Dao<Alue, Integer> {
 
     private final Database database;
 
@@ -41,10 +41,10 @@ public class AlueDao implements Dao <Alue, Integer> {
             String otsikko = rs.getString("otsikko");
             String luoja = rs.getString("luoja");
             String kuvaus = rs.getString("kuvaus");
-         
+
             String luomisaika = rs.getTimestamp("luomisaika").toString();
-            
-            a = new Alue (a_id, otsikko, luoja, kuvaus, luomisaika);
+
+            a = new Alue(a_id, otsikko, luoja, kuvaus, luomisaika);
         }
 
         rs.close();
@@ -58,7 +58,7 @@ public class AlueDao implements Dao <Alue, Integer> {
     public List<Alue> findAll() throws SQLException { //Listaa kaikki alueet
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue ORDER BY luomisaika DESC");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue ORDER BY Alue.otsikko COLLATE NOCASE ASC");
 
         ResultSet rs = stmt.executeQuery();
         List<Alue> alueet = new ArrayList<>();
@@ -68,7 +68,7 @@ public class AlueDao implements Dao <Alue, Integer> {
             String luoja = rs.getString("luoja");
             String kuvaus = rs.getString("kuvaus");
             String luomisaika = rs.getString("luomisaika");
-            System.out.println(rs);
+     
             alueet.add(new Alue(a_id, otsikko, luoja, kuvaus, luomisaika));
         }
 
@@ -81,22 +81,17 @@ public class AlueDao implements Dao <Alue, Integer> {
 
     @Override
     public void add(HashMap<String, Object> params) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        Connection c = database.getConnection();
+        PreparedStatement p = c.prepareStatement("INSERT INTO Alue (otsikko, luoja, kuvaus, luomisaika) VALUES (?, ?, ?, Datetime('now'))");
 
-  /*@Override
- +    public void add(HashMap<String, Object> params) throws SQLException {
- +        Connection c = database.getConnection();
- +            PreparedStatement p = c.prepareStatement("INSERT INTO Alue (otsikko, luoja, kuvaus, luomisaika) VALUES (?, ?, ?, 'Datetime('now')'");
- +                 
- +            
- +            p.setObject(1, params.get("otsikko"));
- +            p.setObject(2, params.get("luoja"));
- +            p.setObject(3, params.get("kuvaus"));
- +            
- +            int a =  p.executeUpdate();
- +   
- +            p.close();
- +            c.close();
- +    }*/
+        p.setObject(1, params.get("otsikko"));
+        p.setObject(2, params.get("luoja"));
+        p.setObject(3, params.get("kuvaus"));
+
+        int a = p.executeUpdate();
+
+        p.close();
+        c.close();
+    }
+ 
 }

@@ -17,6 +17,7 @@ public class Viestiketju {
     private String luoja;
     private String aloitusviesti;
     private String luomisaika;
+    private int v_maara;
 
     public Viestiketju(int vk_id, int a_id, String nimi,
             String luoja, String aloitusviesti, String luomisaika) {
@@ -26,9 +27,19 @@ public class Viestiketju {
         this.luoja = luoja;
         this.aloitusviesti = aloitusviesti;
         this.luomisaika = luomisaika;
+        this.v_maara = 0;
 
     }
 
+    public void setV_maara(int v_maara) {
+        this.v_maara = v_maara;
+    }
+
+    public int getV_maara() {
+        return v_maara;
+    }
+
+    
     @Override
     public String toString() {
         return "viestiketju id: " + vk_id
@@ -87,5 +98,6 @@ public class Viestiketju {
     public void setLuomisaika(String luomisaika) {
         this.luomisaika = luomisaika;
     }
+
 
 }

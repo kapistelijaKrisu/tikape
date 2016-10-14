@@ -46,6 +46,16 @@ body {
     right: 5px;
 }
 
+.alue .v_maara {
+    position: absolute;
+    right: 250px;
+}
+
+.viestiketju .v_maara {
+    position: absolute;
+    right: 250px;
+}
+
 .viestiketju {
     height: 30px;
     margin: 5px;
