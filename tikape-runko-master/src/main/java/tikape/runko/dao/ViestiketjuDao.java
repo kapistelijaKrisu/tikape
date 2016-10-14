@@ -113,7 +113,17 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
 
     @Override
     public void add(HashMap<String, Object> params) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Connection c = database.getConnection();
+            PreparedStatement p = c.prepareStatement("INSERT INTO Viestiketju (a_id, vk_otsikko, luoja, luomisaika, aloitusviesti) VALUES (?, ?, ?, Datetime('now'), ?)");
+                 
+            p.setObject(1, params.get("id"));
+            p.setObject(2, params.get("otsikko"));
+            p.setObject(3, params.get("luoja"));
+            p.setObject(4, params.get("viesti"));
+            int a =  p.executeUpdate();
+            System.out.println(a);
+            p.close();
+            c.close();
     }
 
 }

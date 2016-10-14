@@ -84,5 +84,19 @@ public class AlueDao implements Dao <Alue, Integer> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-  
+  /*@Override
+ +    public void add(HashMap<String, Object> params) throws SQLException {
+ +        Connection c = database.getConnection();
+ +            PreparedStatement p = c.prepareStatement("INSERT INTO Alue (otsikko, luoja, kuvaus, luomisaika) VALUES (?, ?, ?, 'Datetime('now')'");
+ +                 
+ +            
+ +            p.setObject(1, params.get("otsikko"));
+ +            p.setObject(2, params.get("luoja"));
+ +            p.setObject(3, params.get("kuvaus"));
+ +            
+ +            int a =  p.executeUpdate();
+ +   
+ +            p.close();
+ +            c.close();
+ +    }*/
 }

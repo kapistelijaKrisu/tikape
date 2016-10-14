@@ -58,17 +58,43 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         post("/ketju/:vk_id", (req, res) -> { //lisätään viesti 
+           
+         //   if (req.queryParams("teksti").length() > 0 && req.queryParams("nimi").length() > 0){              
+            
             HashMap<String, Object> params = new HashMap<>();
             params.put("id", req.params("vk_id"));
             params.put("nimimerkki", req.queryParams("nimi"));
             params.put("viesti", req.queryParams("teksti"));
 
+            if (debug) Debug.print(params, "main at 63");
+            
+            viestiDao.add(params);
+            viestiDao.fixSize(Integer.parseInt(req.params("vk_id")));
+            
+            //}
+            res.redirect("/ketju/" + req.params("vk_id"));
+            return "Kerrotaan siitä tiedon lähettäjälle";
+       }
+        );
+        
+        post("/alue/:a_id", (req, res) -> { //lisätään ketju 
+            
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("id", req.params("a_id"));
+            params.put("otsikko", req.queryParams("otsikko"));
+            params.put("luoja", req.queryParams("luoja"));
+            params.put("viesti", req.queryParams("viesti"));
+            
+            /* p.setObject(1, params.get("id"));
+            p.setObject(2, params.get("otsikko"));
+            p.setObject(3, params.get("luoja"));*/
+
             if (debug) {
                 Debug.print(params, "main at 63");
             }
-            viestiDao.add(params);
-
-            res.redirect("/ketju/" + req.params("vk_id"));
+            vKetjuDao.add(params);
+            
+            res.redirect("/alue/" + req.params("a_id"));
             return "Kerrotaan siitä tiedon lähettäjälle";
         }
         );

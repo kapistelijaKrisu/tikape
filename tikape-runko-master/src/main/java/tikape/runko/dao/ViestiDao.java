@@ -9,9 +9,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import tikape.runko.Debug;
 import tikape.runko.database.Database;
 import tikape.runko.domain.Viesti;
 
@@ -57,7 +60,6 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue ORDER BY lahetysaika DESC");
-        
 
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
@@ -78,18 +80,18 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         return viestit;
     }
-    
+
     public List<Viesti> findAllByViestiKejuId(Integer id) throws SQLException {
 
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE Viesti.vk_id = ? ORDER BY lahetysaika DESC");
         stmt.setObject(1, id);
-        
+
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
 
         while (rs.next()) {
-        //    System.out.println(rs.getString("viesti") + " " + rs.getString("vk_id"));
+            //    System.out.println(rs.getString("viesti") + " " + rs.getString("vk_id"));
             Integer v_id = rs.getInt("v_id");
             Integer vk_id = rs.getInt("vk_id");
             String nimimerkki = rs.getString("nimimerkki");
@@ -97,31 +99,48 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             String lahetysaika = rs.getString("lahetysaika");
             Viesti v = new Viesti(v_id, vk_id, nimimerkki, viesti, lahetysaika);
             viestit.add(v);
-      
+
         }
 
         rs.close();
         stmt.close();
         connection.close();
-         
+
         return viestit;
     }
 
     @Override
     public void add(HashMap<String, Object> params) throws SQLException {
-    Connection c = database.getConnection();
-            PreparedStatement p = c.prepareStatement("INSERT INTO Viesti (vk_id, nimimerkki, viesti, lahetysaika) VALUES (?, ?, ?, ?)");
-                 
-            p.setObject(1, params.get("id"));
-            p.setObject(2, params.get("nimimerkki"));
-            p.setObject(3, params.get("viesti"));
-            p.setObject(4, "Datetime('now')");
-            int a =  p.executeUpdate();
-   
-            p.close();
-            c.close();
+        Connection c = database.getConnection();
+        PreparedStatement p = c.prepareStatement("INSERT INTO Viesti (vk_id, nimimerkki, viesti, lahetysaika) VALUES (?, ?, ?, Datetime('now'))");
+
+        p.setObject(1, params.get("id"));
+        p.setObject(2, params.get("nimimerkki"));
+        p.setObject(3, params.get("viesti"));
+        int a = p.executeUpdate();
+
+        p.close();
+        c.close();
     }
-    
-    
+
+    public void fixSize(Integer id) throws SQLException {
+
+        List<Viesti> viestit = findAllByViestiKejuId(id);
+
+        Debug.print(viestit, "asd");
+        if (viestit.size() > 10) {
+
+            Connection connection = database.getConnection();
+
+            for (int i = 10; i < viestit.size(); i++) {
+                PreparedStatement stmt = connection.prepareStatement("DELETE FROM Viesti WHERE Viesti.v_id = ?");
+                stmt.setObject(1, viestit.get(i).getV_id());
+                stmt.execute();
+
+            }
+            connection.close();
+        }
+
+    }
 
 }
