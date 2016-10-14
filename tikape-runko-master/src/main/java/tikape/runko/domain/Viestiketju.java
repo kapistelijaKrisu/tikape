@@ -18,14 +18,25 @@ public class Viestiketju {
     private String aloitusviesti;
     private String luomisaika;
 
-    public Viestiketju(int vk_id, int a_id, String nimi, 
+    public Viestiketju(int vk_id, int a_id, String nimi,
             String luoja, String aloitusviesti, String luomisaika) {
         this.vk_id = vk_id;
         this.a_id = a_id;
-        this.nimi= nimi;
+        this.nimi = nimi;
         this.luoja = luoja;
         this.aloitusviesti = aloitusviesti;
         this.luomisaika = luomisaika;
+
+    }
+
+    @Override
+    public String toString() {
+        return "viestiketju id: " + vk_id
+                + " nimi: " + nimi
+                + " a_id: " + a_id
+                + " luoja: " + luoja
+                + " luomisaika: " + luomisaika
+                + " aloitusviesti: " + aloitusviesti;
 
     }
 

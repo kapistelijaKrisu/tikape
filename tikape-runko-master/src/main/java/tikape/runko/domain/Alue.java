@@ -25,6 +25,15 @@ public class Alue {
         this.luomisaika = luomisaika;
     }
 
+    @Override
+    public String toString() {
+        return "Alue: id:" + a_id
+                + " otsikko: " + otsikko
+                + " luoja: " + luoja
+                + " kuvaus: " + kuvaus
+                + " aika: " + luomisaika;
+    }
+
     public Integer getA_id() {
         return a_id;
     }

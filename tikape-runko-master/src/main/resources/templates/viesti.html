@@ -26,6 +26,15 @@
             
             </li>
         </ol>
+        <h2 th:text="${content}">The data</h2>
+        <form method="POST">
+
+            Nimi:<br/>
+            <input type="text" name="nimi"/><br/>
+            Viesti<br/>
+            <input type="text" name="teksti"/><br/>
+            <input type="submit" value="laheta"/>
+        </form>
 
     </body>
 </html>
