@@ -16,41 +16,34 @@ public class Alue {
     private String luoja;
     private String kuvaus;
     private String luomisaika;
-    private String viimeisinviesti;
-    private String aluekohtainenViestimäärä;
-    
-    public Alue(int a_id, String otsikko, String luoja, String kuvaus, String luomisaika, String viimeisinviesti, String aluekohtainenViestimäärä) {
+    private int v_maara;
+
+    public Alue(int a_id, String otsikko, String luoja, String kuvaus, String luomisaika) {
         this.a_id = a_id;
         this.otsikko = otsikko;
         this.luoja = luoja;
         this.kuvaus = kuvaus;
         this.luomisaika = luomisaika;
-        this.viimeisinviesti = viimeisinviesti;
-        this.aluekohtainenViestimäärä = aluekohtainenViestimäärä;
+        v_maara = 0;
     }
 
-    public String getAluekohtainenViestimäärä() {
-        return aluekohtainenViestimäärä;
+    public int getV_maara() {
+        return v_maara;
     }
 
-    public void setAluekohtainenViestimäärä(String aluekohtainenViestimäärä) {
-        this.aluekohtainenViestimäärä = aluekohtainenViestimäärä;
+    public void setV_maara(int v_maara) {
+        this.v_maara = v_maara;
     }
+    
+    
 
-    public String getViimeisinviesti() {
-        return viimeisinviesti;
-    }
-
-    public void setViimeisinviesti(String viimeisinviesti) {
-        this.viimeisinviesti = viimeisinviesti;
-    }
-
-    public String getLuomisaika() {
-        return luomisaika;
-    }
-
-    public void setLuomisaika(String luomisaika) {
-        this.luomisaika = luomisaika;
+    @Override
+    public String toString() {
+        return "Alue: id:" + a_id
+                + " otsikko: " + otsikko
+                + " luoja: " + luoja
+                + " kuvaus: " + kuvaus
+                + " aika: " + luomisaika;
     }
 
     public Integer getA_id() {
@@ -85,11 +78,11 @@ public class Alue {
         this.kuvaus = kuvaus;
     }
 
-    public String getLuomisasika() {
+    public String getLuomisaika() {
         return luomisaika;
     }
 
-    public void setLuomisasika(String luomisasika) {
+    public void setLuomisaika(String luomisasika) {
         this.luomisaika = luomisasika;
     }
 

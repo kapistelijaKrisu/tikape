@@ -1,22 +1,51 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
+
+
     <head>
+
         <title>Ryhmä Pöllöt - Keskustelufoorumi</title>
         <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="../style.css" />
     </head>
 
+
     <body>
-        <h1>Tervetuloa hassunhauskalle keskustelufoorumille!</h1>
+        <div class="wrapper">
+            <h1>Tervetuloa hassunhauskalle keskustelufoorumille!</h1>
 
-        <p>Tässä listaus kaikista tämän alueen keskusteluista:</p>
-        <p>Viestiketjun nimi | Viestimäärä | Linkki viestiketjuun</p>
-        <ol>
-            <li style="list-style-type:none" th:each="viestiketju: ${alueet}">
-                <span th:text="${viestiketju.nimi}">Alueen otsikko</span>
-                <span th:text="${viestiketju.viestimäärä}">Viestimäärä</span>  <a th:href="${'/ketju/' + viestiketju.vk_id}">linkki</a>
-            </li>
-        </ol>
 
+            <p>Tässä listaus kaikista tämän alueen keskusteluista:</p>
+            <ul class="lista">
+                <li th:each="viestiketju : ${alueet}">
+                    <a style="text-decoration: none; color: black;" th:href="${'/ketju/' + viestiketju.vk_id}">
+                        <div class="viestiketju">
+                            <span th:text="${viestiketju.nimi}" class="otsikko"></span>
+                            <span th:text="${viestiketju.v_maara}" class="v_maara"></span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+
+            <form method="POST" style="text-align: left;">
+                <table>
+                    <tr>
+                        <td>Nimi:</td><td><input type="text" name="luoja" style="width: 300px;" /></td>
+                    </tr>
+                    <tr>
+                        <td>Otsikko:</td><td><input type="text" name="otsikko" style="width: 300px; margin-top: 2px;" /></td>
+                    </tr>
+                    <tr>
+                        <td>Viesti:</td><td><textarea rows="6" cols="35" name="viesti" style="width: 900px; margin-top: 5px; max-width: 900px; max-height: 200px;"></textarea></td>
+                    </tr>
+                </table>
+                <div style="width: 900px; position: relative;">
+                    <input type="submit" value="Lähetä" style="position: absolute; right: 0px; width: 800px; height: 150px; font-size: 600%;" />
+                </div>
+            </form>
+        </div>
     </body>
 </html>

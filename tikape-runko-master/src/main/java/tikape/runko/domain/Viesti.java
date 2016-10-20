@@ -10,15 +10,19 @@ package tikape.runko.domain;
  * @author marko
  */
 public class Viesti {
-    
+
     private Integer v_id;
     private Integer vk_id;
     private String nimimerkki;
     private String viesti;
-    private String lähetysaika;
-    
-    public Viesti(int v_id, int vk_id, String nimimerkki, String viesti, String lähetysaika){
-        
+    private String lahetysaika;
+
+    public Viesti(int v_id, int vk_id, String nimimerkki, String viesti, String lähetysaika) {
+        this.v_id = v_id;
+        this.vk_id = vk_id;
+        this.nimimerkki = nimimerkki;
+        this.viesti = viesti;
+        this.lahetysaika = lahetysaika;
     }
 
     public Integer getV_id() {
@@ -54,11 +58,23 @@ public class Viesti {
     }
 
     public String getLähetysaika() {
-        return lähetysaika;
+        return lahetysaika;
     }
 
     public void setLähetysaika(String lähetysaika) {
-        this.lähetysaika = lähetysaika;
+        this.lahetysaika = lähetysaika;
     }
-    
+
+    public String fullString() {
+        return "viesti: id: " + v_id
+                + " vk_id + " + vk_id
+                + " nimimerkki: " + nimimerkki
+                + " lahetysaika: " + lahetysaika
+                + "\n viestin sisalto: " + viesti;
+    }
+    @Override
+    public String toString() {
+        return viesti;
+    }
+
 }
