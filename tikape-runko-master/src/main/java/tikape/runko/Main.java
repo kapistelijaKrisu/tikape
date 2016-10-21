@@ -25,11 +25,8 @@ public class Main {
 
         get("/", (req, res) -> { //Juuressa näytetään kaikki alueet
             HashMap map = new HashMap<>();
-            List<Alue> areas = alueDao.findAll();
+            List<Alue> areas = alueDao.findAllwithMsgCount();
 
-            for (Alue area : areas) {
-                area.setV_maara(vKetjuDao.getViestienMaaraAlueessa(area.getA_id()));
-            }
             
             if (debug) {
                 Debug.print(areas, "at main 28");
@@ -42,7 +39,7 @@ public class Main {
 
         get("/alue/:a_id", (req, res) -> { // Näytetään aluekohtaiset viestiketjut
             HashMap map = new HashMap<>();
-            List<Viestiketju> vkByArea = vKetjuDao.findAllByAlueId(Integer.parseInt(req.params("a_id")));
+            List<Viestiketju> vkByArea = vKetjuDao.findAllWithMsgCountByAlyeId(Integer.parseInt(req.params("a_id")));
 
             for (Viestiketju ketju : vkByArea) {
                 ketju.setV_maara(vKetjuDao.getViestienMaaraKetjus(ketju.getVk_id()));

@@ -93,5 +93,37 @@ public class AlueDao implements Dao<Alue, Integer> {
         p.close();
         c.close();
     }
+    
+    public List<Alue> findAllwithMsgCount() throws SQLException { //Listaa kaikki alueet
+
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement
+        ("SELECT Alue.a_id, Alue.otsikko, Alue.luoja, Alue.kuvaus, Alue.luomisaika, " +
+                "COUNT(Viesti.v_id) AS v_maara,  MAX(Viesti.lahetysaika)AS viimeinenV " + 
+                "FROM Alue INNER JOIN Viestiketju ON Alue.a_id = Viestiketju.a_id " +
+                "LEFT JOIN Viesti ON Viestiketju.vk_id = Viesti.vk_id " +
+                "GROUP BY Alue.a_id " + 
+                "ORDER BY Alue.otsikko COLLATE NOCASE ASC");
+
+        ResultSet rs = stmt.executeQuery();
+        List<Alue> alueet = new ArrayList<>();
+        while (rs.next()) {
+            Integer a_id = rs.getInt("a_id");
+            String otsikko = rs.getString("otsikko");
+            String luoja = rs.getString("luoja");
+            String kuvaus = rs.getString("kuvaus");
+            String luomisaika = rs.getString("luomisaika");
+            String ViimeinenViestiAika = rs.getString("viimeinenV");
+            int v_maara = rs.getInt("v_maara");
+     
+            alueet.add(new Alue(a_id, otsikko, luoja, kuvaus, luomisaika, ViimeinenViestiAika, v_maara));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return alueet;
+    }
  
 }
