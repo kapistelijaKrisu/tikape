@@ -16,19 +16,19 @@
         <div class="wrapper">
             <h1>Tervetuloa hassunhauskalle keskustelufoorumille!</h1>
 
-
+                    
             <p>Tässä listaus kaikista tämän alueen keskusteluista:</p>
             <ul class="lista">
-                <li th:each="viestiketju : ${alueet}">
+                <li th:each="viestiketju : ${ketjut}">
                     <a style="text-decoration: none; color: black;" th:href="${'/ketju/' + viestiketju.vk_id}">
                         <div class="viestiketju">
                             <span th:text="${viestiketju.nimi}" class="otsikko"></span>
-                            <span th:text="${viestiketju.v_maara}" class="v_maara"></span>
+                            <span th:text="${viestiketju.v_maara}" class="v_maara"></span>                                            
                             <span th:text="${viestiketju.viimV_aika}" class="viimViesti"></span>
                         </div>
                     </a>
-                </li>
-            </ul>
+                </li>                         
+            </ul>                          
 
 
             <form method="POST" style="text-align: left;">
@@ -47,6 +47,12 @@
                     <input type="submit" value="Lähetä" style="position: absolute; right: 0px; width: 800px; height: 150px; font-size: 600%;" />
                 </div>
             </form>
+        </div>
+        
+        <div> 
+            <a style="text-decoration: none; color: black;" href="/">
+                <span>???????</span>
+            </a>
         </div>
     </body>
 </html>

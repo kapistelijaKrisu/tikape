@@ -9,6 +9,7 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.dao.*;
 import tikape.runko.database.*;
 import tikape.runko.domain.Alue;
+import tikape.runko.domain.Viesti;
 import tikape.runko.domain.Viestiketju;
 
 public class Main {
@@ -40,29 +41,29 @@ public class Main {
         get("/alue/:a_id", (req, res) -> { // Näytetään aluekohtaiset viestiketjut
             HashMap map = new HashMap<>();
             List<Viestiketju> vkByArea = vKetjuDao.findAllWithMsgCountByAlyeId(Integer.parseInt(req.params("a_id")));
-
-            for (Viestiketju ketju : vkByArea) {
-                ketju.setV_maara(vKetjuDao.getViestienMaaraKetjus(ketju.getVk_id()));
-            }
             
             if (debug) {
                 Debug.print(vkByArea, "main at 39");
             }
-            map.put("alueet", vkByArea);
+            map.put("ketjut", vkByArea);
+            
 
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
 
         get("/ketju/:vk_id", (req, res) -> { // Näytetään aluekohtaiset viestit
             HashMap map = new HashMap<>();
-            List vByVk = viestiDao.findAllByViestiKejuId(Integer.parseInt(req.params("vk_id")));
+            List<Viesti> vByVk = viestiDao.findAllByViestiKejuId(Integer.parseInt(req.params("vk_id")));
 
             if (debug) {
                 Debug.print(vByVk, "main at 50");
             }
             map.put("viestit", vByVk);
-            map.put("otsikko", vKetjuDao.findOne(Integer.parseInt(req.params("vk_id"))).getNimi());
-            map.put("aloitusviesti", vKetjuDao.findOne(Integer.parseInt(req.params("vk_id"))).getAloitusviesti());
+            Viestiketju omistaja = vKetjuDao.findOne(Integer.parseInt(req.params("vk_id")));
+            System.out.println(omistaja);
+            map.put("omistaja", omistaja);
+     //       map.put("aloitusviesti", vKetjuDao.findOne(Integer.parseInt(req.params("vk_id"))).getAloitusviesti());
+         //   map.put("aId", vByVk.get(0).);
                      
             return new ModelAndView(map, "viesti");
         }, new ThymeleafTemplateEngine());

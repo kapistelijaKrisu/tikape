@@ -17,8 +17,8 @@
     </head>
  
     <body>
-        <h1>Otsikko: <span th:text="${otsikko}">Otsikko</span></h1>
-        <p>Aloitusviesti: <span th:text="${aloitusviesti}">Aloitusviesti</span></p>
+        <h1>Otsikko: <span th:text="${omistaja.nimi}">Otsikko</span></h1>
+        <p>Aloitusviesti: <span th:text="${omistaja.aloitusviesti}">Aloitusviesti</span></p>
        
         <ol>
             <li style="list-style-type:none" th:each="viesti: ${viestit}">
@@ -41,5 +41,10 @@
             <input type="submit" value="laheta"/>
         </form>
  
+        <div> 
+            <a style="text-decoration: none; color: black;" th:href="${'/alue/' + omistaja.a_id}">
+                <span th:ref="asd">???????</span>
+            </a>
+        </div>
     </body>
 </html>
