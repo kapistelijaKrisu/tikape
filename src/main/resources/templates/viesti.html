@@ -1,0 +1,82 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Ryhmä Pöllöt - Keskustelufoorumi</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="../style.css" />
+        <style>
+            body
+            {
+                margin: 0;
+                padding: 0;
+                text-align: center;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <img style="width:100px;position:relative;left:30px;margin-left:-50px;" src="../owl.gif" alt="pollo" />
+            <h1><span th:text="${omistaja.nimi}">Otsikko</span></h1>
+            <p>Aloitusviesti: <span th:text="${omistaja.aloitusviesti}">Aloitusviesti</span></p>
+
+
+            <ul style="padding: 0px;">
+
+
+
+
+                <li style="list-style-type:none" th:each="viesti: ${viestit}">
+                    <div class="viesti">
+                        <div class="viestiNimimerkki">
+                            <span th:text="${viesti.nimimerkki}">Viesti</span><br />
+                            <span th:text="${viesti.lahetysaika}">Lahetysaika</span>
+                        </div>
+                        <div class="viestiTeksti">
+                            <span th:text="${viesti}">Viesti</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+
+
+            <h2 th:text="${content}">The data</h2>
+            <form method="POST" style="margin-bottom: 10px;">
+                <table style="text-align: left;">
+                    <tr>
+                        <td>Nimi:</td><td><input type="text" name="luoja" style="width: 300px;" /></td>
+                    </tr>
+                    <tr>
+                        <td>Viesti:</td><td><textarea rows="6" cols="35" name="teksti" style="width: 900px; margin-top: 5px; max-width: 900px; max-height: 200px;"></textarea></td>
+                    </tr>
+                </table>
+                <div class="lahetaWrapper">
+                    <input type="submit" value="Lähetä" class="laheta" />
+                </div>
+            </form>
+
+            <input type="button" value="Edellinen" th:onclick="${'window.location=\'?sivu=' + sivunumerot.edellinen + '\';'}" />
+            <input type="button" value="Seuraava" th:onclick="${'window.location=\'?sivu=' + sivunumerot.seuraava + '\';'}" />
+
+
+
+
+            <hr></hr>
+
+
+
+            <div> 
+                <a style="text-decoration: none; color: black;" th:href="${'/alue/' + omistaja.a_id}">
+                    <span th:ref="asd">Takaisin edelliselle alueelle</span>
+                </a>
+            </div>
+
+
+            <hr></hr>
+            <footer style="position: relative;"><pre style="text-align: center">Forum by team Pöllöt brought to you by: Krisu, Anni, Marko, Jami</pre></footer>
+        </div>
+    </body>
+</html>
