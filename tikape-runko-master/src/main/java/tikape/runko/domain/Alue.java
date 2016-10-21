@@ -16,6 +16,7 @@ public class Alue {
     private String luoja;
     private String kuvaus;
     private String luomisaika;
+    private int v_maara;
 
     public Alue(int a_id, String otsikko, String luoja, String kuvaus, String luomisaika) {
         this.a_id = a_id;
@@ -23,6 +24,26 @@ public class Alue {
         this.luoja = luoja;
         this.kuvaus = kuvaus;
         this.luomisaika = luomisaika;
+        v_maara = 0;
+    }
+
+    public int getV_maara() {
+        return v_maara;
+    }
+
+    public void setV_maara(int v_maara) {
+        this.v_maara = v_maara;
+    }
+    
+    
+
+    @Override
+    public String toString() {
+        return "Alue: id:" + a_id
+                + " otsikko: " + otsikko
+                + " luoja: " + luoja
+                + " kuvaus: " + kuvaus
+                + " aika: " + luomisaika;
     }
 
     public Integer getA_id() {
