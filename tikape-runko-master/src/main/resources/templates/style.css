@@ -41,7 +41,7 @@ body {
     left: 500px;
 }
 
-.alue .luomisaika {
+.alue .viimViesti {
     position: absolute;
     right: 5px;
 }
@@ -54,6 +54,11 @@ body {
 .viestiketju .v_maara {
     position: absolute;
     right: 250px;
+}
+
+.viestiketju .viimViesti {
+    position: absolute;
+    right: 5px;
 }
 
 .viestiketju {
