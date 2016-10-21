@@ -1,7 +1,7 @@
 body { 
     margin: 0;
     padding: 0;
-    background-color: #ffec65;
+    background-color: #f4f4f4;
 }
 
 .wrapper {
@@ -19,19 +19,24 @@ body {
     margin: 5px;
     border: 3px solid black;
     border-radius: 5px;
-    background-color: #fffb72;
+    background-color: #f4f4f4;
     position: relative;
     padding: 5px;
 }
 
-.alue:hover {
-    background-color: #f7e400;
+.hover:hover {
+    background-color: #e6e6e6;
 }
 
 .alue .otsikko {
     position: absolute;
     width: 230px;
     font-size: 110%;
+}
+
+.alue .otsikko2 {
+    position: absolute;
+    width: 230px;
 }
 
 .alue .kuvaus {
@@ -41,10 +46,12 @@ body {
     left: 500px;
 }
 
-.alue .luomisaika {
+.alue .viimViesti {
     position: absolute;
     right: 5px;
 }
+
+
 
 .alue .v_maara {
     position: absolute;
@@ -56,16 +63,59 @@ body {
     right: 250px;
 }
 
+.viestiketju .viimViesti {
+    position: absolute;
+    right: 5px;
+}
+
 .viestiketju {
     height: 30px;
     margin: 5px;
     border: 3px solid black;
     border-radius: 5px;
-    background-color: #fffb72;
+    background-color: #f4f4f4;
     position: relative;
     padding: 5px;
 }
 
-.viestiketju:hover {
-    background-color: #f7e400;
+.viesti {
+    height: 48px;
+    margin: 5px;
+    position: relative;
+    text-align: left;
+}
+
+.viestiNimimerkki {
+    height: 33px;
+    width: 250px;
+    margin-right: 5px;
+    border: 3px solid black;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    padding: 5px;
+    float: left;
+}
+
+.viestiTeksti {
+    height: 33px;
+    width: 680px;
+    border: 3px solid black;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    padding: 5px;
+    float: left;
+}
+
+.laheta {
+    position: absolute;
+    right: 0px;
+    width: 700px;
+    height: 100px;
+    font-size: 500%;
+}
+
+.lahetaWrapper {
+    width: 850px;
+    height: 100px;
+    position: relative;
 }

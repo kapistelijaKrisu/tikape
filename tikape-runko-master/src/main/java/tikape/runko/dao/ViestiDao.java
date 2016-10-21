@@ -78,11 +78,15 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return viestit;
     }
 
-    public List<Viesti> findAllByViestiKejuId(Integer id) throws SQLException {
+    public List<Viesti> findAllByViestiKejuId(Integer id, int sivu) throws SQLException {
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE Viesti.vk_id = ? ORDER BY lahetysaika DESC");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE Viesti.vk_id = ? ORDER BY lahetysaika LIMIT ?, 10");
+        
+        int limitAlku = (sivu - 1) * 10;
+        
         stmt.setObject(1, id);
+        stmt.setObject(2, limitAlku);
 
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
@@ -96,7 +100,6 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             String lahetysaika = rs.getString("lahetysaika");
             Viesti v = new Viesti(v_id, vk_id, nimimerkki, viesti, lahetysaika);
             viestit.add(v);
-
         }
 
         rs.close();
@@ -120,24 +123,24 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         c.close();
     }
 
-    public void fixSize(Integer id) throws SQLException {
-
-        List<Viesti> viestit = findAllByViestiKejuId(id);
-
-        
-        if (viestit.size() > 10) {
-
-            Connection connection = database.getConnection();
-
-            for (int i = 10; i < viestit.size(); i++) {
-                PreparedStatement stmt = connection.prepareStatement("DELETE FROM Viesti WHERE Viesti.v_id = ?");
-                stmt.setObject(1, viestit.get(i).getV_id());
-                stmt.execute();
-
-            }
-            connection.close();
-        }
-
-    }
+//    public void fixSize(Integer id) throws SQLException {
+//
+//        List<Viesti> viestit = findAllByViestiKejuId(id);
+//
+//        
+//        if (viestit.size() > 10) {
+//
+//            Connection connection = database.getConnection();
+//
+//            for (int i = 10; i < viestit.size(); i++) {
+//                PreparedStatement stmt = connection.prepareStatement("DELETE FROM Viesti WHERE Viesti.v_id = ?");
+//                stmt.setObject(1, viestit.get(i).getV_id());
+//                stmt.execute();
+//
+//            }
+//            connection.close();
+//        }
+//
+//    }
 
 }

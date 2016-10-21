@@ -87,14 +87,14 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
     @Override
     public List<Viestiketju> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Opiskelija ORDER BY luomisaika DESC");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viestiketju ORDER BY luomisaika DESC");
 
         ResultSet rs = stmt.executeQuery();
         List<Viestiketju> viestiketjut = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("vk_id");
             Integer a_id = rs.getInt("a_id");
-            String nimi = rs.getString("nimi");
+            String nimi = rs.getString("vk_otsikko");
             String luoja = rs.getString("luoja");
             String aloitus_viesti = rs.getString("aloitusviesti");
             Timestamp luomisaika = rs.getTimestamp("luomisaika");
@@ -121,7 +121,7 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
         p.setObject(3, params.get("luoja"));
         p.setObject(4, params.get("viesti"));
         int a = p.executeUpdate();
-        //System.out.println(a);
+        System.out.println(a);
         p.close();
         c.close();
     }
@@ -158,16 +158,40 @@ public class ViestiketjuDao implements Dao<Viestiketju, Integer> {
     
     }
 
-    public int getViestienMaaraAlueessa(int a_id) throws SQLException {
+    public List<Viestiketju> findAllWithMsgCountByAlyeId(int alueId) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(Viesti.v_id) FROM Alue INNER JOIN Viestiketju ON alue.a_id = Viestiketju.a_id INNER JOIN Viesti WHERE Alue.a_id = ?");
-        stmt.setObject(1, a_id);
+        PreparedStatement stmt = connection.prepareStatement
+        ("SELECT Viestiketju.vk_id, Viestiketju.vk_otsikko, Viestiketju.luoja, ViestiKetju.a_id, " + 
+                "Viestiketju.aloitusviesti, Viestiketju.luomisaika, " +
+                "COUNT(Viesti.v_id) AS v_maara,  MAX(Viesti.lahetysaika) AS viimeinenV " + 
+                "FROM Viestiketju LEFT JOIN Viesti ON Viestiketju.vk_id = Viesti.vk_id " +
+                "WHERE Viestiketju.a_id = ? " +
+                "GROUP BY Viestiketju.vk_id " + 
+                "ORDER BY luomisaika DESC");  
+
+        stmt.setObject(1, alueId);
         ResultSet rs = stmt.executeQuery();
-       
-        int count = rs.getInt(1);
+        List<Viestiketju> viestiketjut = new ArrayList<>();
+        
+        while (rs.next()) {
+            Integer id = rs.getInt("vk_id");
+            Integer a_id = rs.getInt("a_id");
+            String nimi = rs.getString("vk_otsikko");
+            String luoja = rs.getString("luoja");
+            String aloitus_viesti = rs.getString("aloitusviesti");
+            String luomisaika = rs.getString("luomisaika");
+            String viimeinenVAika = rs.getString("viimeinenV");
+            int v_maara = rs.getInt("v_maara");
+
+            Viestiketju viestiketju = new Viestiketju(id, a_id, nimi, luoja, aloitus_viesti, luomisaika, viimeinenVAika, v_maara);
+
+            viestiketjut.add(viestiketju);
+        }
+
         rs.close();
+        stmt.close();
         connection.close();
-        System.out.println("dsoifghhdigh            " + count);
-        return count;
+
+        return viestiketjut;
     }
 }

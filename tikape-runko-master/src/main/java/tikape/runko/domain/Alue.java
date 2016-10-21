@@ -5,6 +5,8 @@
  */
 package tikape.runko.domain;
 
+import tikape.runko.Debug;
+
 /**
  *
  * @author marko
@@ -16,6 +18,7 @@ public class Alue {
     private String luoja;
     private String kuvaus;
     private String luomisaika;
+    private String viimeinenViestiAika;
     private int v_maara;
 
     public Alue(int a_id, String otsikko, String luoja, String kuvaus, String luomisaika) {
@@ -23,8 +26,19 @@ public class Alue {
         this.otsikko = otsikko;
         this.luoja = luoja;
         this.kuvaus = kuvaus;
+        this.viimeinenViestiAika = null;
         this.luomisaika = luomisaika;
         v_maara = 0;
+    }
+    
+    public Alue(int a_id, String otsikko, String luoja, String kuvaus, String luomisaika, String viimeinenViestiAika, int v_maara) {
+        this.a_id = a_id;
+        this.otsikko = otsikko;
+        this.luoja = luoja;
+        this.kuvaus = kuvaus;
+        this.luomisaika = luomisaika;
+        this.viimeinenViestiAika = viimeinenViestiAika;
+        this.v_maara = v_maara;
     }
 
     public int getV_maara() {
@@ -43,7 +57,7 @@ public class Alue {
                 + " otsikko: " + otsikko
                 + " luoja: " + luoja
                 + " kuvaus: " + kuvaus
-                + " aika: " + luomisaika;
+                + " aika: " + viimeinenViestiAika;
     }
 
     public Integer getA_id() {
@@ -78,12 +92,26 @@ public class Alue {
         this.kuvaus = kuvaus;
     }
 
+    public String getViimV_aika() {
+        return viimeinenViestiAika;
+    }
+
+    public void setLuomisaika(String luomisasika) {
+        this.viimeinenViestiAika = luomisasika;
+    }
+
     public String getLuomisaika() {
         return luomisaika;
     }
 
-    public void setLuomisaika(String luomisasika) {
-        this.luomisaika = luomisasika;
+    public String getViimeinenViestiAika() {
+        return viimeinenViestiAika;
     }
+
+    public void setViimeinenViestiAika(String viimeinenViestiAika) {
+        this.viimeinenViestiAika = viimeinenViestiAika;
+    }
+    
+    
 
 }

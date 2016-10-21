@@ -17,7 +17,7 @@ public class Viesti {
     private String viesti;
     private String lahetysaika;
 
-    public Viesti(int v_id, int vk_id, String nimimerkki, String viesti, String lähetysaika) {
+    public Viesti(int v_id, int vk_id, String nimimerkki, String viesti, String lahetysaika) {
         this.v_id = v_id;
         this.vk_id = vk_id;
         this.nimimerkki = nimimerkki;
@@ -57,12 +57,12 @@ public class Viesti {
         this.viesti = viesti;
     }
 
-    public String getLähetysaika() {
+    public String getLahetysaika() {
         return lahetysaika;
     }
 
-    public void setLähetysaika(String lähetysaika) {
-        this.lahetysaika = lähetysaika;
+    public void setLahetysaika(String lahetysaika) {
+        this.lahetysaika = lahetysaika;
     }
 
     public String fullString() {

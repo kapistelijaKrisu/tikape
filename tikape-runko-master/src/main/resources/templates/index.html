@@ -9,22 +9,32 @@
 
     <body>
         <div class="wrapper">
+            <img style="width:100px;position:relative;left:50%;margin-left:-50px;" src="owl.gif" alt="pollo" />
             <h1 style="text-align: center;">Tervetuloa hassunhauskalle keskustelufoorumille!</h1>
+
 
             <p>Tässä listaus kaikista keskustelualueista:</p>
             <ul class="lista">
+                <li>
+                    <div style="font-size:130%;" class="alue">
+                        <span class="otsikko2">Otsikko</span>
+                        <span class="kuvaus">Kuvaus</span>
+                        <span class="viimViesti">Viimeisin viesti</span>
+                        <span class="v_maara">Viestimäärä</span>
+                    </div>
+                </li>
                 <li th:each="alue : ${alueet}">
                     <a style="text-decoration: none; color: black;" th:href="${'/alue/' + alue.a_id}">
-                        <div class="alue">
+                        <div class="alue hover">
                             <span th:text="${alue.otsikko}" class="otsikko"></span>
                             <span th:text="${alue.kuvaus}" class="kuvaus"></span>
-                            <span th:text="${alue.luomisaika}" class="luomisaika"></span>
+                            <span th:text="${alue.luomisaika}" class="viimViesti"></span>
                             <span th:text="${alue.v_maara}" class="v_maara"></span>
                         </div>
                     </a>
                 </li>
             </ul>
-            
+
             <form method="POST" style="text-align: left;">
                 <table>
                     <tr>
@@ -37,14 +47,20 @@
                         <td>Kuvaus:</td><td><textarea rows="6" cols="35" name="kuvaus" style="width: 900px; margin-top: 5px; max-width: 900px; max-height: 200px;"></textarea></td>
                     </tr>
                 </table>
-                <div style="width: 900px; position: relative;">
-                    <input type="submit" value="Lähetä" style="position: absolute; right: 0px; width: 800px; height: 150px; font-size: 600%;" />
+                <div class="lahetaWrapper">
+                    <input type="submit" value="Lähetä" class="laheta" />
                 </div>
+
             </form>
+
+            <hr></hr>
+            <footer style="position: relative;"><pre style="text-align: center">Forum by team Pöllöt brought to you by: Krisu, Anni, Marko, Jami</pre></footer>
+
+
         </div>
-        
-        
-        
+
+
+
     </body>
 
 </html>

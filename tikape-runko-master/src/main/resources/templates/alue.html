@@ -14,16 +14,28 @@
 
     <body>
         <div class="wrapper">
-            <h1>Tervetuloa hassunhauskalle keskustelufoorumille!</h1>
+            <img style="width:100px;position:relative;left:50%;margin-left:-50px;" src="../owl.gif" alt="pollo" />
+            <h1 class="otsikko"><span th:text="${otsikko}"></span></h1>
 
 
             <p>Tässä listaus kaikista tämän alueen keskusteluista:</p>
             <ul class="lista">
+
+                <li>
+                    <div style="font-size:130%;" class="viestiketju">
+                        <span class="otsikko2">Otsikko</span>
+                        <span class="viimViesti">Viimeisin viesti</span>
+                        <span class="v_maara">Viestimäärä</span>
+                    </div>
+                </li>
+
+
                 <li th:each="viestiketju : ${alueet}">
                     <a style="text-decoration: none; color: black;" th:href="${'/ketju/' + viestiketju.vk_id}">
-                        <div class="viestiketju">
+                        <div class="viestiketju hover">
                             <span th:text="${viestiketju.nimi}" class="otsikko"></span>
                             <span th:text="${viestiketju.v_maara}" class="v_maara"></span>
+                            <span th:text="${viestiketju.viimV_aika}" class="viimViesti"></span>
                         </div>
                     </a>
                 </li>
@@ -42,10 +54,16 @@
                         <td>Viesti:</td><td><textarea rows="6" cols="35" name="viesti" style="width: 900px; margin-top: 5px; max-width: 900px; max-height: 200px;"></textarea></td>
                     </tr>
                 </table>
-                <div style="width: 900px; position: relative;">
-                    <input type="submit" value="Lähetä" style="position: absolute; right: 0px; width: 800px; height: 150px; font-size: 600%;" />
+                <div class="lahetaWrapper">
+                    <input type="submit" value="Lähetä" class="laheta" />
                 </div>
             </form>
+            <hr></hr>
+            <div style="text-align: center;"> 
+                <a style="text-decoration: none; color: black;" href="/">Takaisin etusivulle</a>
+            </div>
+            <hr></hr>
+            <footer style="position: relative;"><pre style="text-align: center">Forum by team Pöllöt brought to you by: Krisu, Anni, Marko, Jami</pre></footer>
         </div>
     </body>
 </html>

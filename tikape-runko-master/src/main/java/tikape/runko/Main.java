@@ -9,6 +9,7 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.dao.*;
 import tikape.runko.database.*;
 import tikape.runko.domain.Alue;
+import tikape.runko.domain.Sivunumerot;
 import tikape.runko.domain.Viestiketju;
 
 public class Main {
@@ -27,9 +28,7 @@ public class Main {
         }
 
         Database db = new Database(jdbcOsoite);
-        
-        
-        
+
         Spark.staticFileLocation("/templates");
         Database database = new Database(jdbcOsoite);
         database.init();
@@ -41,11 +40,7 @@ public class Main {
 
         get("/", (req, res) -> { //Juuressa näytetään kaikki alueet
             HashMap map = new HashMap<>();
-            List<Alue> areas = alueDao.findAll();
-
-            for (Alue area : areas) {
-                area.setV_maara(vKetjuDao.getViestienMaaraAlueessa(area.getA_id()));
-            }
+            List<Alue> areas = alueDao.findAllwithMsgCount();
 
             if (debug) {
                 Debug.print(areas, "at main 28");
@@ -57,15 +52,14 @@ public class Main {
 
         get("/alue/:a_id", (req, res) -> { // Näytetään aluekohtaiset viestiketjut
             HashMap map = new HashMap<>();
-            List<Viestiketju> vkByArea = vKetjuDao.findAllByAlueId(Integer.parseInt(req.params("a_id")));
+            List<Viestiketju> vkByArea = vKetjuDao.findAllWithMsgCountByAlyeId(Integer.parseInt(req.params("a_id")));
 
-            for (Viestiketju ketju : vkByArea) {
-                ketju.setV_maara(vKetjuDao.getViestienMaaraKetjus(ketju.getVk_id()));
-            }
+            map.put("ketjut", vkByArea);
 
             if (debug) {
                 Debug.print(vkByArea, "main at 39");
             }
+            map.put("otsikko", alueDao.etsiAlueenOtsikko(Integer.parseInt(req.params("a_id"))));
             map.put("alueet", vkByArea);
 
             return new ModelAndView(map, "alue");
@@ -73,12 +67,26 @@ public class Main {
 
         get("/ketju/:vk_id", (req, res) -> { // Näytetään aluekohtaiset viestit
             HashMap map = new HashMap<>();
-            List vByVk = viestiDao.findAllByViestiKejuId(Integer.parseInt(req.params("vk_id")));
-
-            if (debug) {
-                Debug.print(vByVk, "main at 50");
+            
+            
+            int sivu;
+            if (req.queryParams("sivu") == null) {
+                sivu = 1;
+            } else {
+                sivu = Integer.parseInt(req.queryParams("sivu"));
+                if (sivu <= 0) {
+                    sivu = 1;
+                }
             }
+            List vByVk = viestiDao.findAllByViestiKejuId(Integer.parseInt(req.params("vk_id")), sivu);
+            int viestienMaara = vKetjuDao.getViestienMaaraKetjus(Integer.parseInt(req.params("vk_id")));
             map.put("viestit", vByVk);
+            Viestiketju omistaja = vKetjuDao.findOne(Integer.parseInt(req.params("vk_id")));
+            System.out.println(omistaja);
+            map.put("omistaja", omistaja);
+
+            map.put("viestit", vByVk);
+            map.put("sivunumerot", new Sivunumerot(sivu <= 1 ? 1 : sivu - 1, sivu >= (int) Math.ceil(viestienMaara / 10.0) ? (int) Math.ceil(viestienMaara / 10.0) : sivu + 1));
             map.put("otsikko", vKetjuDao.findOne(Integer.parseInt(req.params("vk_id"))).getNimi());
             map.put("aloitusviesti", vKetjuDao.findOne(Integer.parseInt(req.params("vk_id"))).getAloitusviesti());
 
@@ -98,7 +106,7 @@ public class Main {
             }
 
             viestiDao.add(params);
-            viestiDao.fixSize(Integer.parseInt(req.params("vk_id")));
+            //viestiDao.fixSize(Integer.parseInt(req.params("vk_id")));
 
             //}
             res.redirect("/ketju/" + req.params("vk_id"));
@@ -132,10 +140,8 @@ public class Main {
             params.put("otsikko", req.queryParams("otsikko"));
             params.put("luoja", req.queryParams("luoja"));
             params.put("kuvaus", req.queryParams("kuvaus"));
-
-            if (debug) {
-                Debug.print(params, "main at 63");
-            }
+            
+            
             alueDao.add(params);
 
             res.redirect("/");
