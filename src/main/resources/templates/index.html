@@ -1,0 +1,70 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Ryhmä Pöllöt - Keskustelufoorumi</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="style.css" />
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <a href="/"><img style="width:100px;position:relative;left:50%;margin-left:-50px;" src="owl.gif" alt="pollo" /></a>
+            <h1 style="text-align: center;">Tervetuloa hassunhauskalle keskustelufoorumille!</h1>
+
+
+            <p>Tässä listaus kaikista keskustelualueista:</p>
+            <ul class="lista">
+                <li>
+                    <div style="font-size:130%;" class="alue">
+                        <span class="otsikko2">Otsikko</span>
+                        <span class="kuvaus">Kuvaus</span>
+                        <span class="viimViesti">Viimeisin viesti</span>
+                        <span class="v_maara">Viestimäärä</span>
+                    </div>
+                </li>
+                <li th:each="alue : ${alueet}">
+                    <a style="text-decoration: none; color: black;" th:href="${'/alue/' + alue.a_id}">
+                        <div class="alue hover">
+                            <span th:text="${alue.otsikko}" class="otsikko"></span>
+                            <span th:text="${alue.kuvaus}" class="kuvaus"></span>
+                            <span th:text="${alue.luomisaika}" class="viimViesti"></span>
+                            <span th:text="${alue.v_maara}" class="v_maara"></span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+            <form method="POST" style="text-align: left;">
+                <table>
+                    <tr>
+                        <td>Nimi:</td><td><input type="text" name="luoja" style="width: 300px;" /></td>
+                    </tr>
+                    <tr>
+                        <td>Otsikko:</td><td><input type="text" name="otsikko" style="width: 300px; margin-top: 2px;" /></td>
+                    </tr>
+                    <tr>
+                        <td>Kuvaus:</td><td><textarea rows="6" cols="35" name="kuvaus" style="width: 900px; margin-top: 5px; max-width: 900px; max-height: 200px;"></textarea></td>
+                    </tr>
+                </table>
+                <div class="lahetaWrapper">
+                    <input type="submit" value="Lähetä" class="laheta" />
+                </div>
+
+            </form>
+
+            <hr></hr>
+            <footer style="position: relative;"><pre style="text-align: center">Forum by team Pöllöt brought to you by: Krisu, Anni, Marko, Jami</pre></footer>
+            <hr></hr>
+            <footer style="position: relative;"><pre style="text-align: center">Pretty picture is free for use and can be found at: <a href="http://www.publicdomainpictures.net/view-image.php?image=37075&amp;picture=owl-outline&amp;large=1;">Link</a></pre></footer>
+
+
+            
+
+        </div>
+
+
+
+    </body>
+
+</html>
