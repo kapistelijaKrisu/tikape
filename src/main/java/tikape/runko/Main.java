@@ -32,7 +32,7 @@ public class Main {
         Spark.staticFileLocation("/templates");
         Database database = new Database(jdbcOsoite);
         database.init();
-        boolean debug = true;
+        boolean debug = false;
 
         AlueDao alueDao = new AlueDao(database);
         ViestiketjuDao vKetjuDao = new ViestiketjuDao(database);
