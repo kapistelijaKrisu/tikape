@@ -1,0 +1,16 @@
+index.html
+	otsikko muutettu
+	linkki opiskelijalistaukseen poistettu
+Main.java
+	database yhteys avaa foorumi.db
+	turhan opiskelija taulun luominen poistettu
+
+
+Viestiketju-taulusta piti muuttaa otsikko saraka vk_otsikko:ksi
+
+Uudet lauseet
+INSERT INTO Viestiketju (a_id,vk_otsikko,luoja,aloitusviesti,luomisaika) VALUES (1,"Onko java jees?","Reiska","Itse en mitään javaa koodaile!!", Datetime('now'));
+INSERT INTO Viestiketju (a_id,vk_otsikko,luoja,aloitusviesti,luomisaika) VALUES (3,"Haluutsä turpaan","Anni","Haluutko vai et, häh?", Datetime('now'));
+INSERT INTO Viestiketju (a_id,vk_otsikko,luoja,aloitusviesti,luomisaika) VALUES (1,"Matematiikka ja ohjelmointi","Pete","Matikka on jees!", Datetime('now'));
+INSERT INTO Viestiketju (a_id,vk_otsikko,luoja,aloitusviesti,luomisaika) VALUES (1,"Onko ruby jees?","Reiska","Ei", Datetime('now'));
+INSERT INTO Viestiketju (a_id,vk_otsikko,luoja,aloitusviesti,luomisaika) VALUES (2,"Millä autolla ajelette pitkin teitä?","Reiska","Itel BWM 2001020", Datetime('now'));
